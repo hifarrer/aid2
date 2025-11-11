@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
 
     // Get health reports count for each user
     const usersWithReports = await Promise.all(
-      (users || []).map(async (user) => {
+      (users || []).map(async (user: { id: string; email: string; plan: string | null }) => {
         const { count } = await supabase
           .from('health_reports')
           .select('*', { count: 'exact', head: true })
