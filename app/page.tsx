@@ -83,6 +83,18 @@ export default function LandingPage() {
     fetchAll();
   }, [supabaseBrowser]);
 
+  // Auto-refresh page after 10 minutes
+  useEffect(() => {
+    const refreshTimeout = setTimeout(() => {
+      window.location.reload();
+    }, 10 * 60 * 1000); // 10 minutes in milliseconds
+
+    // Cleanup timeout on component unmount
+    return () => {
+      clearTimeout(refreshTimeout);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f6faf9]">
       
@@ -328,7 +340,7 @@ export default function LandingPage() {
                   </svg>
                 </summary>
                 <div className="faq-answer px-5 pb-4.5 text-[#667085] text-sm leading-relaxed">
-                  No. AI Doctor offers educational guidance and question support. It is not a medical device and doesn't replace care from a qualified clinician. Always seek professional help for urgent concerns.
+                  No. AI Doctor offers educational guidance and question support. It is not a medical device and doesn&apos;t replace care from a qualified clinician. Always seek professional help for urgent concerns.
                 </div>
               </details>
               <details className="faq-item-details bg-white border border-[#e5e7eb] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(16,179,163,.12)]">
