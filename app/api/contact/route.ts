@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     // Email content
     const mailOptions = {
-      from: `"HealthConsultant Contact Form" <${fromEmail}>`,
+      from: `"AI Doctor Helper Contact Form" <${fromEmail}>`,
       to: toEmail,
       replyTo: email,
       subject: `New Contact Form Message from ${name}`,
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
           
           <div style="margin-top: 30px; padding: 15px; background: #e8f4fd; border-radius: 8px; border-left: 4px solid #8856ff;">
             <p style="margin: 0; color: #666; font-size: 14px;">
-              This message was sent from the HealthConsultant contact form. 
+              This message was sent from the AI Doctor Helper contact form. 
               You can reply directly to this email to respond to ${name}.
             </p>
           </div>
@@ -78,7 +78,7 @@ Message:
 ${message}
 
 ---
-This message was sent from the HealthConsultant contact form.
+This message was sent from the AI Doctor Helper contact form.
 You can reply directly to this email to respond to ${name}.
       `,
     };

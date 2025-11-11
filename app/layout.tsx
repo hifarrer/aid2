@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     console.error('Error fetching settings for metadata:', error);
     return {
-      title: "Health Consultant AI",
+      title: "AI Doctor Helper",
       description: "An AI-powered medical assistant",
     };
   }

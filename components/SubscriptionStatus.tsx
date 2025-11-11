@@ -75,15 +75,15 @@ export default function SubscriptionStatus() {
   if (isLoading) {
     return (
       <div style={{
-        background: 'linear-gradient(180deg, #12182c, #0f1325)',
-        border: '1px solid #1e2541',
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
         borderRadius: '20px',
         padding: '32px',
         height: 'fit-content'
       }}>
         <style jsx>{`
           .loading-skeleton {
-            background: linear-gradient(90deg, #1e2541 25%, #2a3463 50%, #1e2541 75%);
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
             background-size: 200% 100%;
             animation: loading 1.5s infinite;
           }
@@ -101,8 +101,8 @@ export default function SubscriptionStatus() {
   if (!subscription) {
     return (
       <div style={{
-        background: 'linear-gradient(180deg, #12182c, #0f1325)',
-        border: '1px solid #1e2541',
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
         borderRadius: '20px',
         padding: '32px',
         height: 'fit-content'
@@ -110,10 +110,10 @@ export default function SubscriptionStatus() {
         <style jsx>{`
           .no-subscription {
             text-align: center;
-            color: #9aa4b2;
+            color: #6b7280;
           }
           .no-subscription h3 {
-            color: #e7ecf5;
+            color: #1f2937;
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 8px;
@@ -163,8 +163,8 @@ export default function SubscriptionStatus() {
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #12182c, #0f1325)',
-      border: '1px solid #1e2541',
+      background: '#ffffff',
+      border: '1px solid #e5e7eb',
       borderRadius: '20px',
       padding: '32px',
       height: 'fit-content'
@@ -176,7 +176,7 @@ export default function SubscriptionStatus() {
         .subscription-title {
           font-size: 18px;
           font-weight: 700;
-          color: #e7ecf5;
+          color: #1f2937;
           margin-bottom: 16px;
         }
         .status-badge {
@@ -196,18 +196,18 @@ export default function SubscriptionStatus() {
           justify-content: space-between;
           align-items: center;
           padding: 12px 0;
-          border-bottom: 1px solid #1e2541;
+          border-bottom: 1px solid #e5e7eb;
         }
         .detail-item:last-child {
           border-bottom: none;
         }
         .detail-label {
-          color: #9aa4b2;
+          color: #6b7280;
           font-size: 14px;
           font-weight: 500;
         }
         .detail-value {
-          color: #e7ecf5;
+          color: #1f2937;
           font-size: 14px;
           font-weight: 600;
         }

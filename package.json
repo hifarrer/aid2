@@ -8,7 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "init-data": "node scripts/init-data.js"
+    "init-data": "node scripts/init-data.js",
+    "init-database-data": "node scripts/init-database-data.js",
+    "copy-schema": "node scripts/copy-database-schema.js",
+    "setup-database": "node scripts/setup-database.js",
+    "create-admin": "node scripts/create-admin-user.js",
+    "init-settings": "node scripts/init-settings.js"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.2.22",
@@ -60,6 +65,7 @@
     "dotenv": "^17.2.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
+    "pg": "^8.16.3",
     "postcss": "^8",
     "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.1",

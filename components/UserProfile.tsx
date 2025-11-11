@@ -121,8 +121,8 @@ export function UserProfile() {
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #12182c, #0f1325)',
-      border: '1px solid #1e2541',
+      background: '#ffffff',
+      border: '1px solid #e5e7eb',
       borderRadius: '20px',
       padding: '32px',
       height: 'fit-content'
@@ -130,14 +130,14 @@ export function UserProfile() {
       <style jsx>{`
         .profile-tabs {
           display: flex;
-          border-bottom: 1px solid #1e2541;
+          border-bottom: 1px solid #e5e7eb;
           margin-bottom: 24px;
         }
         .profile-tab {
           padding: 12px 16px;
           background: none;
           border: none;
-          color: #9aa4b2;
+          color: #6b7280;
           font-weight: 600;
           font-size: 14px;
           cursor: pointer;
@@ -145,18 +145,18 @@ export function UserProfile() {
           border-bottom: 2px solid transparent;
         }
         .profile-tab.active {
-          color: #e7ecf5;
+          color: #1f2937;
           border-bottom-color: #8856ff;
         }
         .profile-tab:hover:not(.active) {
-          color: #b7c1d6;
+          color: #4b5563;
         }
         .form-group {
           margin-bottom: 24px;
         }
         .form-label {
           display: block;
-          color: #e7ecf5;
+          color: #1f2937;
           font-weight: 600;
           margin-bottom: 8px;
           font-size: 14px;
@@ -164,10 +164,10 @@ export function UserProfile() {
         .form-input {
           width: 100%;
           padding: 16px;
-          background: #0e142c;
-          border: 1px solid #2a3261;
+          background: #ffffff;
+          border: 1px solid #d1d5db;
           border-radius: 12px;
-          color: #dfe6ff;
+          color: #1f2937;
           font-size: 16px;
           transition: all 0.2s ease;
         }
@@ -177,7 +177,7 @@ export function UserProfile() {
           box-shadow: 0 0 0 3px rgba(136, 86, 255, 0.1);
         }
         .form-input::placeholder {
-          color: #8ca0c5;
+          color: #9ca3af;
         }
         .btn-group {
           display: flex;
@@ -202,13 +202,13 @@ export function UserProfile() {
           background: linear-gradient(90deg, #7a4bff, #9a44ff);
         }
         .btn.secondary {
-          background: #161a2c;
-          color: #e8edfb;
-          border: 1px solid #2a2f44;
+          background: #f3f4f6;
+          color: #1f2937;
+          border: 1px solid #d1d5db;
         }
         .btn.secondary:hover {
-          background: #1e2541;
-          border-color: #3a4161;
+          background: #e5e7eb;
+          border-color: #9ca3af;
         }
         .btn.danger {
           background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
@@ -224,7 +224,7 @@ export function UserProfile() {
         .section-title {
           font-size: 18px;
           font-weight: 700;
-          color: #e7ecf5;
+          color: #1f2937;
           margin-bottom: 16px;
         }
       `}</style>
@@ -276,13 +276,6 @@ export function UserProfile() {
           </div>
 
           <div className="btn-group">
-            <button
-              type="button"
-              className="btn danger"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
             <button type="submit" className="btn primary" disabled={isLoading}>
               {isLoading ? "Saving..." : "Save Changes"}
             </button>

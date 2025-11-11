@@ -13,7 +13,7 @@ export default function AdminLogin() {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [siteName, setSiteName] = useState("Health Consultant AI");
+  const [siteName, setSiteName] = useState("AI Doctor Helper");
   const router = useRouter();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function AdminLogin() {
         const response = await fetch('/api/settings');
         if (response.ok) {
           const data = await response.json();
-          setSiteName(data.siteName || "Health Consultant AI");
+          setSiteName(data.siteName || "AI Doctor Helper");
         }
       } catch (error) {
         console.error('Error fetching site name:', error);

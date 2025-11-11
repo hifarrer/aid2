@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { Plan } from "@/lib/plans";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SubscriptionModal from "@/components/SubscriptionModal";
 import toast from "react-hot-toast";
@@ -15,9 +14,11 @@ export default function PlansPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
-  const [siteName, setSiteName] = useState("");
-  const [logoUrl, setLogoUrl] = useState<string>("");
   const [faqs, setFaqs] = useState<Array<{ id: string; question: string; answer: string }>>([]);
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
+  };
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -46,8 +47,6 @@ export default function PlansPage() {
         if (response.ok) {
           const data = await response.json();
           setFaqs(Array.isArray(data) ? data : []);
-        } else {
-          console.error('Failed to fetch FAQs');
         }
       } catch (error) {
         console.error('Error fetching FAQs:', error);
@@ -59,359 +58,126 @@ export default function PlansPage() {
 
   const handleSubscribe = (plan: Plan) => {
     if (!session) {
-      // Redirect to login if not authenticated
       window.location.href = "/auth/login";
       return;
     }
     
-    // Open subscription modal for paid plans
     if (plan.title !== 'Free') {
       setSelectedPlan(plan);
       setIsSubscriptionModalOpen(true);
     } else {
-      // Handle free plan subscription
-      console.log(`User ${session.user?.email} wants to subscribe to ${plan.title}`);
       toast.success('Free plan activated!');
     }
   };
 
   const handleSubscriptionSuccess = () => {
-    // Refresh user data or update UI
     toast.success('Subscription successful! Welcome to your new plan.');
   };
 
-  useEffect(() => {
-    const fetchSiteSettings = async () => {
-      try {
-        const response = await fetch('/api/settings');
-        if (response.ok) {
-          const data = await response.json();
-          setSiteName(data.siteName || "");
-          setLogoUrl(data.logoUrl || "");
-        }
-      } catch (error) {
-        console.error('Error fetching site settings:', error);
-      }
-    };
-
-    fetchSiteSettings();
-  }, []);
-
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen" style={{ background: '#0f1320' }}>
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-[#f6faf9]">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#10b3a3]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{
-      '--bg': '#0f1320',
-      '--text': '#e7ecf5',
-      '--muted': '#9aa4b2',
-      '--cta': '#8856ff',
-      '--cta-2': '#a854ff',
-      '--accent': '#6ae2ff'
-    } as React.CSSProperties}>
-      <style jsx global>{`
-        :root {
-          --bg: #0f1320;
-          --text: #e7ecf5;
-          --muted: #9aa4b2;
-          --cta: #8856ff;
-          --cta-2: #a854ff;
-          --accent: #6ae2ff;
-        }
-        * {
-          box-sizing: border-box;
-        }
-        body {
-          margin: 0;
-          font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-          background:
-            radial-gradient(1200px 600px at -10% -10%, #1a1f35 2%, transparent 60%),
-            radial-gradient(900px 500px at 110% -5%, #1a1f35 5%, transparent 65%),
-            var(--bg);
-          color: var(--text);
-        }
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-        .container {
-          max-width: 1240px;
-          margin: 0 auto;
-          padding: 24px;
-        }
-        .nav {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .logo {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          font-weight: 800;
-          font-size: 20px;
-          transition: opacity 0.2s ease;
-        }
-        .logo:hover {
-          opacity: 0.8;
-        }
-        .logo-badge {
-          width: 34px;
-          height: 34px;
-          border-radius: 10px;
-          display: grid;
-          place-items: center;
-          background: linear-gradient(135deg, var(--cta), var(--accent));
-          color: #08101b;
-          font-weight: 900;
-        }
-        .navlinks {
-          display: flex;
-          gap: 26px;
-          color: #c9d2e2;
-        }
-        .btn {
-          padding: 12px 18px;
-          border-radius: 12px;
-          border: 1px solid #2a2f44;
-          background: #161a2c;
-          color: #e8edfb;
-          font-weight: 600;
-          transition: all 0.2s ease;
-        }
-        .btn:hover {
-          background: #1e2541;
-          border-color: #3a4161;
-        }
-        .btn.primary {
-          background: linear-gradient(90deg, var(--cta), var(--cta-2));
-          border: none;
-          color: #fff;
-        }
-        .btn.primary:hover {
-          background: linear-gradient(90deg, #7a4bff, #9a44ff);
-        }
-        .eyebrow {
-          color: #a8b1c6;
-          font-weight: 600;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          font-size: 12px;
-        }
-        .title {
-          font-size: 48px;
-          line-height: 1.05;
-          font-weight: 800;
-          margin: 16px 0;
-          letter-spacing: -0.02em;
-          color: #e7ecf5;
-        }
-        .sub {
-          color: #b7c1d6;
-          max-width: 600px;
-          margin: 0 auto;
-          font-size: 18px;
-        }
-        .plan-card {
-          background: linear-gradient(180deg, #12182c, #0f1325);
-          border: 1px solid #1e2541;
-          border-radius: 20px;
-          padding: 32px;
-          transition: all 0.3s ease;
-        }
-        .plan-card:hover {
-          transform: translateY(-4px);
-          border-color: #2a3463;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        .plan-card.popular {
-          border: 2px solid #8856ff;
-          background: linear-gradient(180deg, #1a1f35, #0f1325);
-        }
-        .popular-badge {
-          background: linear-gradient(90deg, var(--cta), var(--cta-2));
-          color: white;
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
-          position: absolute;
-          top: -12px;
-          left: 50%;
-          transform: translateX(-50%);
-        }
-        .price {
-          font-size: 48px;
-          font-weight: 800;
-          color: #e7ecf5;
-          margin: 16px 0;
-        }
-        .price-period {
-          color: #9aa4b2;
-          font-size: 16px;
-        }
-        .feature-list {
-          list-style: none;
-          padding: 0;
-          margin: 24px 0;
-        }
-        .feature-item {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 12px;
-          color: #b7c1d6;
-        }
-        .feature-icon {
-          width: 20px;
-          height: 20px;
-          color: #6ae2ff;
-          flex-shrink: 0;
-        }
-        .subscribe-btn {
-          width: 100%;
-          padding: 16px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 16px;
-          transition: all 0.2s ease;
-          border: none;
-          cursor: pointer;
-        }
-        .subscribe-btn.primary {
-          background: linear-gradient(90deg, var(--cta), var(--cta-2));
-          color: white;
-        }
-        .subscribe-btn.primary:hover {
-          background: linear-gradient(90deg, #7a4bff, #9a44ff);
-        }
-        .subscribe-btn.secondary {
-          background: #161a2c;
-          color: #e8edfb;
-          border: 1px solid #2a2f44;
-        }
-        .subscribe-btn.secondary:hover {
-          background: #1e2541;
-          border-color: #3a4161;
-        }
-        .faq-section {
-          background: linear-gradient(180deg, #0a0e1a, #0f1320);
-          padding: 80px 0;
-          margin-top: 80px;
-        }
-
-        .cta-section {
-          background: linear-gradient(180deg, #0f1320, #0a0e1a);
-          padding: 80px 0;
-        }
-        .cta-card {
-          background: linear-gradient(180deg, #12182c, #0f1325);
-          border: 1px solid #1e2541;
-          border-radius: 20px;
-          padding: 48px;
-          text-align: center;
-          max-width: 600px;
-          margin: 0 auto;
-        }
-        .footer {
-          background: #0a0e1a;
-          border-top: 1px solid #1e2541;
-          padding: 24px;
-        }
-        .footer-content {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          max-width: 1240px;
-          margin: 0 auto;
-        }
-        .footer-links {
-          display: flex;
-          gap: 24px;
-        }
-        .footer-links a {
-          color: #9aa4b2;
-          font-size: 14px;
-          transition: color 0.2s ease;
-        }
-        .footer-links a:hover {
-          color: #e7ecf5;
-        }
-      `}</style>
-
-      <header className="container">
-        <nav className="nav">
-          <Link href="/" className="logo">
-            <div className="logo-badge">+</div>
-            <span>Health<span style={{ color: '#7ae2ff' }}>Consultant</span></span>
-          </Link>
-          <div className="navlinks">
-            <a href="/#features">Features</a>
-            <a href="/#how-it-works">How it Works</a>
-            <a href="/#faq">FAQ</a>
-            <a href="/plans">Pricing</a>
-            <a href="/contact">Contact</a>
+    <div className="min-h-screen bg-[#f6faf9]">
+      {/* Top bar */}
+      <div className="topbar">
+        <div className="container">
+          <div className="stack">
+            <span className="pill">📅 Mon–Fri 08:00–19:00</span>
+            <span className="pill">📍 27th Ave, New York, NY</span>
+            <span className="pill">✉️ hello@aidoctor.ai</span>
+            <span className="pill">☎️ +1 (800) 555‑0199</span>
           </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <a href="/#try" className="pill">⚡ Try Now</a>
+        </div>
+      </div>
+
+      {/* Nav */}
+      <nav className="nav">
+        <div className="container">
+          <Link href="/" className="brand">
+            <span className="logo">AI</span>
+            <span>AI Doctor</span>
+          </Link>
+          <div className="menu">
+            <a href="/#features">Features</a>
+            <a href="/#how">How it works</a>
+            <a href="/#faq">FAQ</a>
+            <Link href="/plans">Pricing</Link>
+            <Link href="/contact">Contact</Link>
             {session ? (
-              <Link className="btn primary" href="/dashboard">Go to Dashboard</Link>
+              <>
+                <Link href="/dashboard" className="btn">Go to Dashboard</Link>
+                <button onClick={handleLogout} className="menu-link">Logout</button>
+              </>
             ) : (
               <>
-                <Link className="btn" href="/auth/login">Sign In</Link>
-                <Link className="btn primary" href="/auth/signup">Get Started</Link>
+                <Link href="/auth/login" className="menu-link">Sign In</Link>
+                <Link href="/#try" className="btn">Try Now</Link>
               </>
             )}
           </div>
-        </nav>
-      </header>
+        </div>
+      </nav>
 
-      <main className="container" style={{ paddingTop: '60px' }}>
-        {/* Page Header */}
-        <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-          <div className="eyebrow">PRICING PLANS</div>
-          <h1 className="title">Choose Your Plan</h1>
-          <p className="sub">
+      {/* Main Content */}
+      <main className="container py-18">
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <div className="eyebrow text-[#667085] font-semibold tracking-wider uppercase text-xs mb-4">
+            PRICING PLANS
+          </div>
+          <h1 className="text-5xl font-extrabold mb-4 text-[#101828]">
+            Choose Your Plan
+          </h1>
+          <p className="text-lg text-[#667085] max-w-[600px] mx-auto">
             Get the perfect AI medical assistance plan for your needs. 
             Start with our free plan and upgrade as you grow.
           </p>
         </div>
 
         {/* Plans Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 350px))', gap: '32px', maxWidth: '800px', margin: '0 auto', justifyContent: 'center' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1100px] mx-auto mb-20">
           {plansList.map((plan) => (
             <div
               key={plan.id}
-              className={`plan-card ${plan.isPopular ? 'popular' : ''}`}
-              style={{ position: 'relative' }}
+              className={`card relative ${plan.isPopular ? 'border-[#10b3a3] border-2' : ''}`}
+              style={{ 
+                transform: plan.isPopular ? 'translateY(-4px)' : 'none',
+                transition: 'all 0.3s ease'
+              }}
             >
               {/* Popular Badge */}
               {plan.isPopular && (
-                <div className="popular-badge">Most Popular</div>
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#10b3a3] text-white px-4 py-1 rounded-full text-xs font-semibold">
+                  Most Popular
+                </div>
               )}
 
               {/* Plan Header */}
-              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                <h3 style={{ fontSize: '24px', fontWeight: '700', color: '#e7ecf5', marginBottom: '8px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                <h3 className="text-2xl font-bold mb-2 text-[#101828]">
                   {plan.title}
                 </h3>
-                <p style={{ color: '#9aa4b2', fontSize: '14px' }}>
+                <p className="text-sm text-[#667085]">
                   {plan.description}
                 </p>
               </div>
 
               {/* Pricing */}
-              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                <div className="price">${plan.monthlyPrice}</div>
-                <div className="price-period">/month</div>
-                <div style={{ color: '#9aa4b2', fontSize: '14px', marginTop: '8px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                <div className="text-5xl font-extrabold text-[#101828] mb-1">
+                  ${plan.monthlyPrice}
+                </div>
+                <div className="text-base text-[#667085]">/month</div>
+                <div className="text-sm text-[#667085] mt-2">
                   ${plan.yearlyPrice}/year
                   {plan.monthlyPrice > 0 && (
-                    <span style={{ color: '#6ae2ff', marginLeft: '8px' }}>
+                    <span className="text-[#10b3a3] ml-2">
                       (save ${(plan.monthlyPrice * 12 - plan.yearlyPrice).toFixed(2)})
                     </span>
                   )}
@@ -419,28 +185,28 @@ export default function PlansPage() {
               </div>
 
               {/* Features */}
-              <ul className="feature-list">
+              <ul className="list-none p-0 m-0 mb-6">
                 {plan.features.map((feature, index) => (
-                  <li key={index} className="feature-item">
-                    <CheckIcon className="feature-icon" />
-                    <span>{feature}</span>
+                  <li key={index} className="flex items-center gap-3 mb-3 text-[#101828]">
+                    <CheckIcon className="w-5 h-5 text-[#10b3a3] flex-shrink-0" />
+                    <span className="text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               {/* Subscribe Button */}
-              <div style={{ marginTop: '32px' }}>
+              <div className="mt-6">
                 {session ? (
                   <button
                     onClick={() => handleSubscribe(plan)}
-                    className={`subscribe-btn ${plan.isPopular ? 'primary' : 'secondary'}`}
+                    className={`btn w-full ${plan.isPopular ? '' : 'bg-white border-2 border-[#10b3a3] text-[#10b3a3] hover:bg-[#eefcfb]'}`}
                   >
                     {plan.title === 'Free' ? 'Get Started' : 'Subscribe Now'}
                   </button>
                 ) : (
-                  <Link href="/auth/login">
+                  <Link href="/auth/login" className="block">
                     <button
-                      className={`subscribe-btn ${plan.isPopular ? 'primary' : 'secondary'}`}
+                      className={`btn w-full ${plan.isPopular ? '' : 'bg-white border-2 border-[#10b3a3] text-[#10b3a3] hover:bg-[#eefcfb]'}`}
                     >
                       {plan.title === 'Free' ? 'Get Started' : 'Subscribe Now'}
                     </button>
@@ -452,110 +218,107 @@ export default function PlansPage() {
         </div>
 
         {/* FAQ Section */}
-        <section className="faq-section">
-          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <div className="eyebrow">FAQ</div>
-            <h2 style={{ fontSize: '48px', fontWeight: '800', margin: '16px 0', color: '#e7ecf5' }}>
-              Frequently Asked Questions
-            </h2>
-            <p style={{ color: '#b7c1d6', maxWidth: '600px', margin: '0 auto', fontSize: '18px' }}>
-              Have questions? We have answers.
-            </p>
-          </div>
-          
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            {faqs.length === 0 ? (
-              <div style={{ textAlign: 'center', color: '#9aa4b2', fontSize: '16px' }}>No FAQs yet.</div>
-            ) : (
-              <Accordion type="single" collapsible className="w-full">
-                {faqs.map((f, idx) => (
-                  <AccordionItem key={f.id} value={`item-${idx + 1}`}>
-                    <AccordionTrigger style={{ color: '#e7ecf5', fontSize: '16px', fontWeight: '600' }}>
-                      {f.question}
-                    </AccordionTrigger>
-                    <AccordionContent style={{ color: '#b7c1d6', fontSize: '14px', lineHeight: '1.6' }}>
-                      {f.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            )}
+        <section className="py-18 bg-gradient-to-b from-[#eefcfb] to-white">
+          <div className="container">
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <div className="eyebrow text-[#667085] font-semibold tracking-wider uppercase text-xs mb-4">
+                FAQ
+              </div>
+              <h2 className="text-4xl font-extrabold mb-4 text-[#101828]">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-lg text-[#667085] max-w-[600px] mx-auto">
+                Have questions? We have answers.
+              </p>
+            </div>
+            
+            <div className="max-w-[800px] mx-auto">
+              {faqs.length === 0 ? (
+                <div className="text-center text-[#667085]">No FAQs yet.</div>
+              ) : (
+                <Accordion type="single" collapsible className="w-full">
+                  {faqs.map((f, idx) => (
+                    <AccordionItem key={f.id} value={`item-${idx + 1}`} className="qa">
+                      <AccordionTrigger className="text-[#101828] text-base font-semibold">
+                        {f.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-[#667085] text-sm leading-relaxed">
+                        {f.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              )}
+            </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="cta-section">
-          <div className="cta-card">
-            <h2 style={{ fontSize: '32px', fontWeight: '800', marginBottom: '16px', color: '#e7ecf5' }}>
-              Ready to get started?
-            </h2>
-            <p style={{ color: '#b7c1d6', fontSize: '18px', marginBottom: '32px' }}>
-              Join thousands of users who trust our AI medical assistance platform.
-            </p>
-            {session ? (
-              <Link href="/dashboard">
-                <button className="subscribe-btn primary">
-                  Go to Dashboard
-                </button>
-              </Link>
-            ) : (
-              <Link href="/auth/signup">
-                <button className="subscribe-btn primary">
-                  Get Started Free
-                </button>
-              </Link>
-            )}
+        <section className="py-18">
+          <div className="container">
+            <div className="tile text-center max-w-[600px] mx-auto">
+              <h2 className="text-3xl font-extrabold mb-4 text-[#101828]">
+                Ready to get started?
+              </h2>
+              <p className="text-lg text-[#667085] mb-8">
+                Join thousands of users who trust our AI medical assistance platform.
+              </p>
+              {session ? (
+                <Link href="/dashboard">
+                  <button className="btn">
+                    Go to Dashboard
+                  </button>
+                </Link>
+              ) : (
+                <Link href="/auth/signup">
+                  <button className="btn">
+                    Get Started Free
+                  </button>
+                </Link>
+              )}
+            </div>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="footer">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          {/* App Download Links */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
-            <a 
-              href="https://apps.apple.com/us/app/health-consultant-ai/id6754229345" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{ transition: 'opacity 0.2s ease' }}
-              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
-              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-            >
-              <img 
-                src="https://res.cloudinary.com/dqemas8ht/image/upload/v1762298292/applestore_nbfd12.png" 
-                alt="Download on the App Store" 
-                style={{ height: '40px', width: 'auto' }}
-              />
-            </a>
-            <a 
-              href="https://play.google.com/store/apps/details?id=ai.healthconsultant.mobile" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{ transition: 'opacity 0.2s ease' }}
-              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
-              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-            >
-              <img 
-                src="https://res.cloudinary.com/dqemas8ht/image/upload/v1762298292/googleplay_oight1.png" 
-                alt="Get it on Google Play" 
-                style={{ height: '40px', width: 'auto' }}
-              />
-            </a>
-          </div>
-          
-          {/* Footer Links */}
-          <div className="footer-content">
-            <p style={{ color: '#9aa4b2', fontSize: '14px' }}>
-              © 2025 HealthConsultant. All rights reserved.
-            </p>
-            <div className="footer-links">
-              <Link href="/terms">Terms of Service</Link>
-              <Link href="/privacy">Privacy Policy</Link>
-              <Link href="/contact">Contact</Link>
+      <footer className="bg-[#0f172a] text-[#cbd5e1]">
+        <section className="container py-8">
+          <div className="cols grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+            <div>
+              <div className="brand text-[#e2e8f0]">
+                <span className="logo">AI</span>
+                <span>AI Doctor</span>
+              </div>
+              <p className="text-[#9fb3c8] max-w-[52ch] mt-3">
+                AI Doctor provides educational information only and does not diagnose, treat, or prescribe.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Company</h4>
+              <div className="divider"></div>
+              <a href="#" className="block text-[#9fb3c8] hover:text-white transition-colors">About</a>
+              <a href="#" className="block text-[#9fb3c8] hover:text-white transition-colors">Careers</a>
+              <Link href="/contact" className="block text-[#9fb3c8] hover:text-white transition-colors">Contact</Link>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Product</h4>
+              <div className="divider"></div>
+              <a href="/#features" className="block text-[#9fb3c8] hover:text-white transition-colors">Features</a>
+              <a href="/#try" className="block text-[#9fb3c8] hover:text-white transition-colors">Try now</a>
+              <a href="/#faq" className="block text-[#9fb3c8] hover:text-white transition-colors">FAQ</a>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Legal</h4>
+              <div className="divider"></div>
+              <Link href="/terms" className="block text-[#9fb3c8] hover:text-white transition-colors">Terms</Link>
+              <Link href="/privacy" className="block text-[#9fb3c8] hover:text-white transition-colors">Privacy</Link>
             </div>
           </div>
-        </div>
+          <div className="copyright border-t border-white/20 mt-6 pt-4.5 text-center text-sm text-[#94a3b8]">
+            © {new Date().getFullYear()} AI Doctor. All rights reserved.
+          </div>
+        </section>
       </footer>
 
       {/* Subscription Modal */}
@@ -570,6 +333,19 @@ export default function PlansPage() {
           onSuccess={handleSubscriptionSuccess}
         />
       )}
+
+      <style jsx>{`
+        .menu-link {
+          padding: 8px 10px;
+          border-radius: 10px;
+          color: #334155;
+          font-weight: 500;
+        }
+        .menu-link:hover {
+          background: #eefcfb;
+          color: #0b8f84;
+        }
+      `}</style>
     </div>
   );
 }

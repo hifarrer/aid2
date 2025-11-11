@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
 
     let sqlContent = `-- Database Structure Export
 -- Generated on: ${new Date().toISOString()}
--- Database: HealthConsultant
+-- Database: AI Doctor Helper
 -- Export Type: Structure Only (No Data)
 
 SET statement_timeout = 0;

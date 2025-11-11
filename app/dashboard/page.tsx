@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { PublicChat } from "@/components/PublicChat";
 import { UserProfile } from "@/components/UserProfile";
 import SubscriptionStatus from "@/components/SubscriptionStatus";
@@ -17,6 +17,10 @@ export default function DashboardPage() {
   const [logoUrl, setLogoUrl] = useState<string>("");
   const { data: session } = useSession();
   const isAdmin = !!(session as any)?.user?.isAdmin;
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" });
+  };
 
   useEffect(() => {
     const fetchSiteSettings = async () => {
@@ -177,7 +181,52 @@ export default function DashboardPage() {
         .navlinks {
           display: flex;
           gap: 26px;
-          color: #c9d2e2;
+          align-items: center;
+          color: ${chatTheme === 'light' ? '#6b7280' : '#c9d2e2'};
+        }
+        .navlinks a,
+        .navlinks button {
+          background: none;
+          border: none;
+          padding: 0;
+          color: ${chatTheme === 'light' ? '#6b7280' : '#c9d2e2'};
+          font-weight: 500;
+          font-size: 15px;
+          text-decoration: none;
+          cursor: pointer;
+          transition: color 0.2s ease;
+          position: relative;
+        }
+        .navlinks a:hover,
+        .navlinks button:hover {
+          color: ${chatTheme === 'light' ? '#8856ff' : '#7ae2ff'};
+        }
+        .navlinks a.active,
+        .navlinks button.active {
+          color: ${chatTheme === 'light' ? '#8856ff' : '#7ae2ff'};
+          font-weight: 600;
+        }
+        .navlinks a.active::after,
+        .navlinks button.active::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: ${chatTheme === 'light' ? '#8856ff' : '#7ae2ff'};
+        }
+        .navlinks a.admin {
+          color: ${chatTheme === 'light' ? '#ef4444' : '#ff6b6b'};
+        }
+        .navlinks a.admin:hover {
+          color: ${chatTheme === 'light' ? '#dc2626' : '#ff5252'};
+        }
+        .navlinks button.logout {
+          color: ${chatTheme === 'light' ? '#6b7280' : '#9aa4b2'};
+        }
+        .navlinks button.logout:hover {
+          color: ${chatTheme === 'light' ? '#ef4444' : '#ff6b6b'};
         }
         .btn {
           padding: 12px 18px;
@@ -306,31 +355,32 @@ export default function DashboardPage() {
         <nav className="nav">
           <Link href="/" className="logo">
             <div className="logo-badge">+</div>
-            <span>Health<span style={{ color: '#7ae2ff' }}>Consultant</span></span>
+            <span>{siteName || "AI Doctor Helper"}</span>
           </Link>
-          <div className="navlinks" style={{ gap: 12 }}>
+          <div className="navlinks" style={{ gap: 24 }}>
             <button
               onClick={() => setActiveSection("chat")}
-              className={`btn ${activeSection === "chat" ? "active" : ""}`}
-              style={{ padding: '10px 12px' }}
+              className={activeSection === "chat" ? "active" : ""}
             >
               Chat
             </button>
             <button
               onClick={() => setActiveSection("profile")}
-              className={`btn ${activeSection === "profile" ? "active" : ""}`}
-              style={{ padding: '10px 12px' }}
+              className={activeSection === "profile" ? "active" : ""}
             >
               Profile
             </button>
-            <Link href="/health-history" className="btn" style={{ padding: '10px 12px' }}>
-              Health History
+            <Link href="/reports">
+              Reports
             </Link>
             {isAdmin && (
-              <Link href="/admin" className="btn admin" style={{ padding: '10px 12px' }}>
+              <Link href="/admin" className="admin">
                 Admin Panel
               </Link>
             )}
+            <button onClick={handleLogout} className="logout">
+              Logout
+            </button>
           </div>
           <button aria-label="Open menu" className="menu-toggle" onClick={() => setIsMenuOpen(v => !v)}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -344,10 +394,11 @@ export default function DashboardPage() {
           <div className="mobile-menu" onMouseLeave={() => setIsMenuOpen(false)}>
             <button onClick={() => { setActiveSection('chat'); setIsMenuOpen(false); }}>Chat</button>
             <button onClick={() => { setActiveSection('profile'); setIsMenuOpen(false); }}>Profile</button>
-            <Link href="/health-history" onClick={() => setIsMenuOpen(false)}>Health History</Link>
+            <Link href="/reports" onClick={() => setIsMenuOpen(false)}>Reports</Link>
             {isAdmin && (
               <Link href="/admin" onClick={() => setIsMenuOpen(false)}>Admin Panel</Link>
             )}
+            <button onClick={() => { handleLogout(); setIsMenuOpen(false); }}>Logout</button>
           </div>
         )}
       </header>
@@ -393,7 +444,7 @@ export default function DashboardPage() {
       <footer className="footer">
         <div className="footer-content">
           <p style={{ color: chatTheme === 'light' ? '#6b7280' : '#9aa4b2', fontSize: '14px' }}>
-            © 2025 HealthConsultant. All rights reserved.
+            © 2025 {siteName || "AI Doctor Helper"}. All rights reserved.
           </p>
           <div className="footer-links">
             <Link href="/terms">Terms of Service</Link>

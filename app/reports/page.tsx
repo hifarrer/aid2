@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -148,21 +148,53 @@ export default function HealthHistoryPage() {
     );
   }
 
+  const isAdmin = !!(session as any)?.user?.isAdmin;
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Top Navigation */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white">
+                AI Doctor Helper
+              </Link>
+              <nav className="hidden md:flex space-x-6">
+                <Link href="/dashboard" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                  Chat
+                </Link>
+                <Link href="/dashboard?section=profile" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                  Profile
+                </Link>
+                <Link href="/reports" className="text-blue-600 dark:text-blue-400 font-medium">
+                  Reports
+                </Link>
+                {isAdmin && (
+                  <Link href="/admin" className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
+                    Admin Panel
+                  </Link>
+                )}
+              </nav>
+            </div>
+            <button 
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Health History</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
-                Track and manage your health reports and analysis history
-              </p>
-            </div>
-            <Link href="/dashboard">
-              <Button variant="outline">Back to Dashboard</Button>
-            </Link>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reports</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">
+              Track and manage your medical reports and analysis
+            </p>
           </div>
         </div>
 

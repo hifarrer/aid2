@@ -1,4 +1,4 @@
-// Admin system for Health Consultant AI app
+// Admin system for AI Doctor Helper app
 import { getUsers, deleteUser as deleteUserFromDB } from "./server/users";
 import { getSettings } from "./server/settings";
 
@@ -8,7 +8,7 @@ export const adminConfig = {
   password: "p@ssword333", // In production, this should be hashed
   email: "admin@medicalai.com", // Default admin email
   siteSettings: {
-    siteName: "Health Consultant AI",
+    siteName: "AI Doctor Helper",
     contactEmail: "contact@medicalai.com",
     supportEmail: "support@medicalai.com",
     maxUsersPerDay: 1000,

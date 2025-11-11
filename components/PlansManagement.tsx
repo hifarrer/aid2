@@ -128,15 +128,15 @@ export default function PlansManagement() {
   if (isLoading) {
     return (
       <div style={{
-        background: 'linear-gradient(180deg, #12182c, #0f1325)',
-        border: '1px solid #1e2541',
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
         borderRadius: '20px',
         padding: '32px',
         height: 'fit-content'
       }}>
         <style jsx>{`
           .loading-skeleton {
-            background: linear-gradient(90deg, #1e2541 25%, #2a3463 50%, #1e2541 75%);
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
             background-size: 200% 100%;
             animation: loading 1.5s infinite;
           }
@@ -155,8 +155,8 @@ export default function PlansManagement() {
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #12182c, #0f1325)',
-      border: '1px solid #1e2541',
+      background: '#ffffff',
+      border: '1px solid #e5e7eb',
       borderRadius: '20px',
       padding: '32px',
       height: 'fit-content'
@@ -165,12 +165,12 @@ export default function PlansManagement() {
         .section-title {
           font-size: 18px;
           font-weight: 700;
-          color: #e7ecf5;
+          color: #1f2937;
           margin-bottom: 24px;
         }
         .current-plan {
-          background: linear-gradient(180deg, #1a1f35, #0f1325);
-          border: 1px solid #2a3463;
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
           border-radius: 16px;
           padding: 20px;
           margin-bottom: 24px;
@@ -178,18 +178,18 @@ export default function PlansManagement() {
         .current-plan-title {
           font-size: 14px;
           font-weight: 600;
-          color: #9aa4b2;
+          color: #6b7280;
           margin-bottom: 8px;
         }
         .current-plan-name {
           font-size: 20px;
           font-weight: 700;
-          color: #e7ecf5;
+          color: #1f2937;
           margin-bottom: 4px;
         }
         .current-plan-date {
           font-size: 12px;
-          color: #9aa4b2;
+          color: #6b7280;
         }
         .plans-list {
           display: flex;
@@ -197,18 +197,18 @@ export default function PlansManagement() {
           gap: 16px;
         }
         .plan-item {
-          background: linear-gradient(180deg, #1a1f35, #0f1325);
-          border: 1px solid #2a3463;
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
           border-radius: 16px;
           padding: 20px;
           transition: all 0.2s ease;
         }
         .plan-item:hover {
-          border-color: #3a4161;
+          border-color: #d1d5db;
         }
         .plan-item.current {
           border-color: #8856ff;
-          background: linear-gradient(180deg, #1a1f35, #0f1325);
+          background: #f9fafb;
         }
         .plan-header {
           display: flex;
@@ -222,21 +222,21 @@ export default function PlansManagement() {
         .plan-name {
           font-size: 16px;
           font-weight: 700;
-          color: #e7ecf5;
+          color: #1f2937;
           margin-bottom: 4px;
         }
         .plan-description {
           font-size: 12px;
-          color: #9aa4b2;
+          color: #6b7280;
           margin-bottom: 8px;
           line-height: 1.4;
         }
         .plan-pricing {
           font-size: 12px;
-          color: #b7c1d6;
+          color: #4b5563;
         }
         .plan-price-highlight {
-          color: #6ae2ff;
+          color: #8856ff;
           font-weight: 600;
         }
         .plan-actions {
@@ -260,13 +260,13 @@ export default function PlansManagement() {
           background: linear-gradient(90deg, #7a4bff, #9a44ff);
         }
         .plan-btn.secondary {
-          background: #161a2c;
-          color: #e8edfb;
-          border: 1px solid #2a2f44;
+          background: #f3f4f6;
+          color: #1f2937;
+          border: 1px solid #d1d5db;
         }
         .plan-btn.secondary:hover {
-          background: #1e2541;
-          border-color: #3a4161;
+          background: #e5e7eb;
+          border-color: #9ca3af;
         }
         .plan-btn.danger {
           background: linear-gradient(90deg, #ff6b6b, #ff8e8e);

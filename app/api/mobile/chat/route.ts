@@ -377,7 +377,7 @@ Remember: You are providing educational information only, not medical advice, di
     let aiResponse = result.response.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
 
     // Append compliance disclaimer to every response for mobile app compliance
-    const complianceDisclaimer = `\n\n---\n\n**Important:** Health Consultant AI is intended for general informational and educational purposes only. It does not provide medical advice, diagnosis, or treatment. Always consult a licensed healthcare provider before making decisions related to your health or treatment.`;
+    const complianceDisclaimer = `\n\n---\n\n**Important:** AI Doctor Helper is intended for general informational and educational purposes only. It does not provide medical advice, diagnosis, or treatment. Always consult a licensed healthcare provider before making decisions related to your health or treatment.`;
     
     aiResponse = aiResponse + complianceDisclaimer;
 

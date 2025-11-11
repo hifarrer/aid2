@@ -58,9 +58,9 @@ export async function POST(req: NextRequest) {
 
     // Email content
     const mailOptions = {
-      from: `"HealthConsultant" <${fromEmail}>`,
+      from: `"AI Doctor Helper" <${fromEmail}>`,
       to: email,
-      subject: 'Password Reset Request - HealthConsultant',
+      subject: 'Password Reset Request - AI Doctor Helper',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #8856ff; border-bottom: 2px solid #8856ff; padding-bottom: 10px;">
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
           
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p>Hello ${user.firstName || 'User'},</p>
-            <p>We received a request to reset your password for your HealthConsultant account.</p>
+            <p>We received a request to reset your password for your AI Doctor Helper account.</p>
           </div>
           
           <div style="background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; text-align: center;">
@@ -106,7 +106,7 @@ Password Reset Request
 
 Hello ${user.firstName || 'User'},
 
-We received a request to reset your password for your HealthConsultant account.
+We received a request to reset your password for your AI Doctor Helper account.
 
 Click the link below to reset your password:
 ${resetLink}
@@ -115,7 +115,7 @@ This link will expire in 1 hour for security reasons.
 If you didn't request this password reset, please ignore this email.
 
 ---
-HealthConsultant Team
+AI Doctor Helper Team
       `,
     };
 

@@ -71,7 +71,7 @@ export default function AdminDashboard() {
     maxUsersPerDay: 1000,
     maintenanceMode: false,
   });
-  const [siteName, setSiteName] = useState("Health Consultant AI");
+  const [siteName, setSiteName] = useState("AI Doctor Helper");
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
       setUsers(usersData.users || []);
       setStats(statsData);
       setConfig(configData);
-      setSiteName(settingsData.siteName || "Health Consultant AI");
+      setSiteName(settingsData.siteName || "AI Doctor Helper");
       setSiteForm({
         contactEmail: configData?.siteSettings?.contactEmail || "",
         supportEmail: configData?.siteSettings?.supportEmail || "",

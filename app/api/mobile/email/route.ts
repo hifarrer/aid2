@@ -40,7 +40,7 @@ const smtpConfig = {
 };
 
 const fromEmail = process.env.SMTP_FROM;
-const toEmail = 'contact@healthconsultant.ai';
+const toEmail = 'contact@aidoctorhelper.com';
 
 export async function POST(request: NextRequest) {
   try {
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
 
     // Email content
     const mailOptions = {
-      from: `"HealthConsultant Mobile App" <${fromEmail}>`,
+      from: `"AI Doctor Helper Mobile App" <${fromEmail}>`,
       to: toEmail,
       replyTo: email,
       subject: 'App Message from User',
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
           
           <div style="margin-top: 30px; padding: 15px; background: #e8f4fd; border-radius: 8px; border-left: 4px solid #8856ff;">
             <p style="margin: 0; color: #666; font-size: 14px;">
-              This message was sent from the HealthConsultant mobile app. 
+              This message was sent from the AI Doctor Helper mobile app. 
               You can reply directly to this email to respond to the user.
             </p>
           </div>
@@ -155,7 +155,7 @@ Message:
 ${message}
 
 ---
-This message was sent from the HealthConsultant mobile app.
+This message was sent from the AI Doctor Helper mobile app.
 You can reply directly to this email to respond to the user.
       `,
     };

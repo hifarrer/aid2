@@ -534,7 +534,7 @@ export function PublicChat({ chatTheme = 'light' }: { chatTheme?: ChatTheme }) {
                       type="button"
                       size="sm"
                       variant="outline"
-                      onClick={() => window.open('/health-history', '_blank')}
+                      onClick={() => window.open('/reports', '_blank')}
                       className={`text-xs h-7 ${isDarkTheme ? '' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:text-gray-900'}`}
                     >
                       <HistoryIcon className={`w-3 h-3 mr-1 ${isDarkTheme ? '' : 'text-gray-700'}`} />

@@ -70,14 +70,15 @@ export default function AdminLayout({
                   <HealthReportsIcon className="w-5 h-5 mr-3" />
                   Health Reports
                 </Link>
-                <Link href="/admin/faq" onClick={() => setMobileSidebarOpen(false)} className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                {/* Hidden: FAQ and Landing pages */}
+                {/* <Link href="/admin/faq" onClick={() => setMobileSidebarOpen(false)} className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <DashboardIcon className="w-5 h-5 mr-3" />
                   FAQ
                 </Link>
                 <Link href="/admin/landing" onClick={() => setMobileSidebarOpen(false)} className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <DashboardIcon className="w-5 h-5 mr-3" />
                   Landing
-                </Link>
+                </Link> */}
                 <Link href="/admin/plans" onClick={() => setMobileSidebarOpen(false)} className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   <PlansIcon className="w-5 h-5 mr-3" />
                   Plans
@@ -116,14 +117,15 @@ export default function AdminLayout({
               <HealthReportsIcon className="w-5 h-5 mr-3" />
               Health Reports
             </Link>
-            <Link href="/admin/faq" className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            {/* Hidden: FAQ and Landing pages */}
+            {/* <Link href="/admin/faq" className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               <DashboardIcon className="w-5 h-5 mr-3" />
               FAQ
             </Link>
             <Link href="/admin/landing" className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               <DashboardIcon className="w-5 h-5 mr-3" />
               Landing
-            </Link>
+            </Link> */}
             <Link href="/admin/plans" className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               <PlansIcon className="w-5 h-5 mr-3" />
               Plans

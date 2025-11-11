@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Doctor – Your Health, Smarter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand:#10b3a3;        /* teal */
+      --brand-dark:#0b8f84;   /* darker teal */
+      --text:#101828;         /* slate */
+      --muted:#667085;        /* gray */
+      --bg:#f6faf9;           /* subtle mint */
+      --card:#ffffff;         /* white */
+      --shadow:0 10px 30px rgba(16,179,163,.12);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--bg)}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1200px,92%);margin-inline:auto}
+    /* Top info bar */
+    .topbar{background:#0f172a;color:#cbd5e1;font-size:.9rem}
+    .topbar .container{display:flex;gap:18px;align-items:center;justify-content:space-between;padding:10px 0}
+    .topbar .stack{display:flex;gap:18px;flex-wrap:wrap}
+    .topbar svg{width:16px;height:16px;margin-right:6px;opacity:.85}
+    .pill{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);padding:6px 10px;border-radius:999px}
+
+    /* Navbar */
+    .nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid #e5e7eb}
+    .nav .container{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px;color:var(--brand-dark)}
+    .brand .logo{width:34px;height:34px;display:grid;place-items:center;background:var(--brand);color:#fff;border-radius:10px;box-shadow:var(--shadow)}
+    .menu{display:flex;gap:20px;align-items:center}
+    .menu a{padding:8px 10px;border-radius:10px;color:#334155;font-weight:500}
+    .menu a:hover{background:#eefcfb;color:#0b8f84}
+    .btn{display:inline-flex;align-items:center;gap:10px;background:var(--brand);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;box-shadow:var(--shadow)}
+    .btn:hover{background:var(--brand-dark)}
+
+    /* Hero */
+    .hero{position:relative;isolation:isolate}
+    .hero .bg{position:absolute;inset:0;z-index:-2;background:url('https://images.unsplash.com/photo-1527613426441-4da17471b66d?q=80&w=1400&auto=format&fit=crop') center/cover no-repeat}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,23,42,.72) 10%, rgba(15,23,42,.35) 55%, rgba(15,23,42,.05) 100%);z-index:-1}
+    .hero .container{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;min-height:72vh;align-items:center;padding:56px 0}
+    .kicker{display:inline-block;background:rgba(255,255,255,.1);color:#e2e8f0;border:1px solid rgba(226,232,240,.25);padding:6px 10px;border-radius:999px;font-size:.85rem;margin-bottom:16px}
+    .h1{font-size:clamp(2rem,4vw,3.2rem);line-height:1.05;margin:0 0 12px;color:#fff;font-weight:800}
+    .h1 .accent{color:#5ef2e7}
+    .lead{color:#e2e8f0;font-size:1.05rem;max-width:52ch}
+    .badges{display:flex;gap:16px;margin-top:22px;flex-wrap:wrap}
+    .badge{display:flex;align-items:center;gap:10px;background:#ffffff; color:#0f172a; padding:10px 12px;border-radius:999px;box-shadow:var(--shadow);font-weight:600}
+    .cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+    .ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.65)}
+    .ghost:hover{background:rgba(255,255,255,.1)}
+    .stat-box{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+    .stat{background:rgba(255,255,255,.9);border:1px solid #e2e8f0;border-radius:16px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+    .stat b{font-size:1.6rem;color:var(--brand-dark)}
+
+    /* Feature cards row (like screenshot) */
+    .feature-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:-60px}
+    .card{background:var(--card);border:1px solid #e5e7eb;border-top:4px solid var(--brand);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px;font-size:1.05rem}
+    .card p{margin:0 0 16px;color:var(--muted);font-size:.95rem}
+    .card .small{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--brand-dark)}
+
+    /* Sections */
+    section{padding:72px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+    .tile{background:var(--card);border:1px solid #e5e7eb;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+    .tile h3{margin:0 0 10px}
+    .tile p{color:var(--muted)}
+
+    .divider{height:1px;background:#e5e7eb;margin:32px 0}
+
+    /* FAQ */
+    .faq{max-width:900px;margin-inline:auto}
+    .qa{background:#fff;border:1px solid #e5e7eb;border-radius:14px;margin:12px 0;overflow:hidden;box-shadow:var(--shadow)}
+    .qa summary{cursor:pointer;list-style:none;padding:18px 20px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+    .qa summary::marker{display:none}
+    .qa summary svg{transition:transform .25s ease}
+    .qa[open] summary svg{transform:rotate(180deg)}
+    .qa .ans{padding:0 20px 18px;color:var(--muted);line-height:1.7}
+
+    /* Footer */
+    footer{background:#0f172a;color:#cbd5e1}
+    footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px}
+    footer a{color:#9fb3c8}
+    .copyright{border-top:1px solid rgba(148,163,184,.2);margin-top:24px;padding:18px 0;text-align:center;font-size:.9rem;color:#94a3b8}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .hero .container{grid-template-columns:1fr}
+      .stat-box{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .feature-row{grid-template-columns:1fr 1fr}
+      footer .cols{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:640px){
+      .menu{display:none}
+      .stat-box{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .feature-row{grid-template-columns:1fr}
+      footer .cols{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container">
+      <div class="stack">
+        <span class="pill">📅 Mon–Fri 08:00–19:00</span>
+        <span class="pill">📍 27th Ave, New York, NY</span>
+        <span class="pill">✉️ hello@aidoctor.ai</span>
+        <span class="pill">☎️ +1 (800) 555‑0199</span>
+      </div>
+      <a class="pill" href="#try">⚡ Try Now</a>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="container">
+      <a class="brand" href="#">
+        <span class="logo">AI</span>
+        <span>AI Doctor</span>
+      </a>
+      <div class="menu">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn" href="#try" id="try-now-top">Try Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header id="home" class="hero">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="container">
+      <div>
+        <span class="kicker">You and <strong>your AI doctor</strong></span>
+        <h1 class="h1">Smart, private&nbsp;<span class="accent">health answers</span> in seconds.</h1>
+        <p class="lead">Ask symptoms, medications, lab results, and get evidence‑linked insights. Available 24/7, designed for patients and caregivers. Not a substitute for professional medical advice.</p>
+        <div class="badges">
+          <span class="badge">✅ Regular Checkups</span>
+          <span class="badge">🕒 Always Available</span>
+          <span class="badge">🔒 Privacy‑First</span>
+        </div>
+        <div class="cta">
+          <a href="#try" class="btn" id="try-now-hero">⚡ Try Now</a>
+          <a href="#features" class="btn ghost">Explore Features</a>
+        </div>
+      </div>
+      <div class="stat-box">
+        <div class="stat"><b>50k+</b><br><small>Conversations</small></div>
+        <div class="stat"><b>92%</b><br><small>User satisfaction</small></div>
+        <div class="stat"><b>24/7</b><br><small>Availability</small></div>
+        <div class="stat"><b>HIPAA‑aware</b><br><small>Best practices</small></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Feature row (like screenshot) -->
+  <div class="container feature-row" id="features">
+    <article class="card">
+      <h3>Professional staff</h3>
+      <p>Built with medical advisors and reviewed prompts to improve clarity and safety.</p>
+      <a class="small" href="#how">Read more →</a>
+    </article>
+    <article class="card">
+      <h3>Affordable prices</h3>
+      <p>Start free. Upgrade for unlimited chats, saved histories, and PDF export.</p>
+      <a class="small" href="#pricing">View prices →</a>
+    </article>
+    <article class="card">
+      <h3>Insurance partners</h3>
+      <p>Bring your own plan. We integrate with major HSA/FSA payment providers.</p>
+      <a class="small" href="#partners">See partners →</a>
+    </article>
+    <article class="card">
+      <h3>Consult our doctors</h3>
+      <p>Request a telehealth follow‑up with licensed clinicians in select regions.</p>
+      <a class="small" href="#try">Choose a doctor →</a>
+    </article>
+  </div>
+
+  <!-- How it works -->
+  <section id="how">
+    <div class="container">
+      <h2 style="margin:0 0 14px;font-size:2rem">How it works</h2>
+      <p style="color:var(--muted);max-width:70ch">Upload notes or lab results, type a question, and receive easy‑to‑read explanations with citations. Your data is encrypted in transit and at rest; you control what to save or delete.</p>
+      <div class="grid-3" style="margin-top:24px">
+        <div class="tile"><h3>1) Ask</h3><p>Describe symptoms, medications, conditions, or share a PDF. The assistant clarifies before answering.</p></div>
+        <div class="tile"><h3>2) Understand</h3><p>Get plain‑language guidance, differential considerations, and risk flags. Includes links to high‑quality sources.</p></div>
+        <div class="tile"><h3>3) Act</h3><p>Receive next‑step options you can discuss with a clinician: monitoring tips, questions to ask, and care checklists.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Try Now CTA / Demo placeholder -->
+  <section id="try" style="background:linear-gradient(180deg,#eefcfb,#fff)">
+    <div class="container">
+      <div class="tile" style="display:grid;gap:18px;align-items:center">
+        <h2 style="margin:0">Try AI Doctor now</h2>
+        <p style="margin:0;color:var(--muted)">This is a demo input. Hook your real chat widget or modal here.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <input id="demoInput" placeholder="e.g., I have a sore throat and fever—what should I do?" style="flex:1;min-width:220px;padding:14px 16px;border:1px solid #e5e7eb;border-radius:12px" />
+          <button class="btn" onclick="demo()">⚡ Ask</button>
+        </div>
+        <div id="demoOut" style="display:none;border:1px dashed #d0e7e5;padding:16px;border-radius:12px;background:#fbffff"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container faq">
+      <h2 style="text-align:center;font-size:2rem;margin:0 0 10px">Frequently Asked Questions</h2>
+      <p style="text-align:center;color:var(--muted);margin:0 0 24px">Quick answers about privacy, safety, and availability.</p>
+
+      <details class="qa" open>
+        <summary>Is this a medical diagnosis tool?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <div class="ans">No. AI Doctor offers educational guidance and question support. It is not a medical device and doesn’t replace care from a qualified clinician. Always seek professional help for urgent concerns.</div>
+      </details>
+
+      <details class="qa">
+        <summary>How do you protect my data?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <div class="ans">We use encryption in transit and at rest, strict access controls, and short retention by default. You can delete your conversations at any time.</div>
+      </details>
+
+      <details class="qa">
+        <summary>Where do answers come from?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <div class="ans">Responses are generated by large language models guided by expert‑curated prompts and linked to reputable sources such as peer‑reviewed articles and clinical guidelines when available.</div>
+      </details>
+
+      <details class="qa">
+        <summary>Can I talk to a human doctor?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <div class="ans">Yes—request a telehealth follow‑up after your session. Availability varies by state/country.</div>
+      </details>
+
+      <details class="qa">
+        <summary>How much does it cost?
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </summary>
+        <div class="ans">You can try it free. Paid plans unlock unlimited chats, saved histories, email summaries, and priority support.</div>
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <section class="container" style="padding:32px 0">
+      <div class="cols">
+        <div>
+          <div class="brand" style="color:#e2e8f0"><span class="logo">AI</span><span>AI Doctor</span></div>
+          <p style="color:#9fb3c8;max-width:52ch">AI Doctor provides educational information only and does not diagnose, treat, or prescribe. In an emergency, call your local emergency number immediately.</p>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="divider"></div>
+          <a href="#">About</a><br>
+          <a href="#">Careers</a><br>
+          <a href="#">Contact</a>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <div class="divider"></div>
+          <a href="#features">Features</a><br>
+          <a href="#try">Try now</a><br>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <div class="divider"></div>
+          <a href="#">Terms</a><br>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+      <div class="copyright">© <span id="year"></span> AI Doctor. All rights reserved.</div>
+    </section>
+  </footer>
+
+  <script>
+    // Demo handler for the Try Now input
+    function demo(){
+      const q = document.getElementById('demoInput').value.trim();
+      const out = document.getElementById('demoOut');
+      if(!q){ out.style.display='block'; out.textContent='Please enter a question to try the demo.'; return; }
+      out.style.display='block';
+      out.innerHTML = '<b>Assistant:</b> For educational purposes only. Based on your message, consider staying hydrated, monitoring temperature, and using analgesics as appropriate. If symptoms worsen or red‑flags (severe pain, difficulty breathing, dehydration) appear, seek in‑person care. <em>(Connect your real backend here.)</em>';
+      out.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

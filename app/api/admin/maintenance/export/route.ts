@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     let sqlContent = `-- Database Export
 -- Generated on: ${new Date().toISOString()}
--- Database: HealthConsultant
+-- Database: AI Doctor Helper
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Health Consultant AI",
+  title: "AI Doctor Helper",
   description: "Your personal AI health assistant dashboard for analyzing health reports and getting medical insights.",
 };
 
