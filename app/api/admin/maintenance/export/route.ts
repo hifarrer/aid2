@@ -96,7 +96,7 @@ DROP TABLE IF EXISTS "${tableName}" CASCADE;
           const sample = tableData.slice(0, Math.min(200, tableData.length));
           const columns = Object.keys(sample[0]);
           const columnDefs = columns.map(col => {
-            const colValues = sample.map(r => r[col]);
+            const colValues = sample.map((r: any) => r[col]);
             const t = inferType(colValues);
             if (col === 'id' && t === 'UUID') {
               return `  "${col}" ${t} PRIMARY KEY DEFAULT gen_random_uuid()`;
