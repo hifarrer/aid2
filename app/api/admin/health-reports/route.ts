@@ -78,20 +78,20 @@ export async function GET(request: NextRequest) {
     // Get health reports count for each user
     const usersWithReports = await Promise.all(
       (users || []).map(async (user: { id: string; email: string; plan: string | null }) => {
-        const { count, error } = await supabase
+        const response = await supabase
           .from('health_reports')
           .select('id', { count: 'exact', head: true })
-          .eq('user_id', user.id);
+          .eq('user_id', user.id) as unknown as { count: number | null; error: any };
 
-        if (error) {
-          console.error('Error counting health reports:', error);
+        if (response.error) {
+          console.error('Error counting health reports:', response.error);
         }
 
         return {
           id: user.id,
           email: user.email,
           plan: user.plan || 'Free',
-          reportsCount: count || 0,
+          reportsCount: response.count || 0,
         };
       })
     );
