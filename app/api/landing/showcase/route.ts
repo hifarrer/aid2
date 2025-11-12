@@ -93,7 +93,7 @@ export async function PUT(request: NextRequest) {
           updated_at: new Date().toISOString()
         })
         .eq('id', existing.id)
-        .select();
+        .select('*');
 
       if (error) {
         console.error('❌ [SHOWCASE_PUT] Error updating showcase images:', error);
@@ -111,7 +111,7 @@ export async function PUT(request: NextRequest) {
           image2: image2 || null,
           image3: image3 || null
         })
-        .select();
+        .select('*');
 
       if (error) {
         console.error('❌ [SHOWCASE_PUT] Error creating showcase images:', error);

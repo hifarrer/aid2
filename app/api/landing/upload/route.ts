@@ -37,8 +37,8 @@ export async function POST(request: Request) {
 			return NextResponse.json({ message: "Upload failed", error: uploadError.message }, { status: 500 });
 		}
 
-		const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(objectPath);
-		return NextResponse.json({ url: publicUrlData.publicUrl }, { status: 200 });
+		const publicUrlData = supabase.storage.from(bucket).getPublicUrl(objectPath);
+		return NextResponse.json({ url: publicUrlData.data.publicUrl }, { status: 200 });
 	} catch (e) {
 		console.error("Upload handler error:", e);
 		return NextResponse.json({ message: "Internal server error" }, { status: 500 });

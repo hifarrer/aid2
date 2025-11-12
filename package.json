@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
     "init-data": "node scripts/init-data.js",
     "init-database-data": "node scripts/init-database-data.js",
     "copy-schema": "node scripts/copy-database-schema.js",
@@ -59,6 +61,7 @@
   "devDependencies": {
     "@types/node": "^20",
     "@types/pdf-parse": "^1.1.5",
+    "@types/pg": "^8.15.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^10.0.0",

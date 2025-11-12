@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         recommendations: recommendations,
         risk_level: riskLevel || 'normal'
       })
-      .select()
+      .select('*')
       .single();
 
     if (error) {

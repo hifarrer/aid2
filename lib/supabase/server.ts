@@ -27,8 +27,7 @@ function getDatabasePool(): Pool {
   pool = new Pool({
     connectionString,
     ssl: isRender || isSupabase ? {
-      rejectUnauthorized: false,
-      require: isRender ? true : false
+      rejectUnauthorized: false
     } : false,
     max: 20,
     idleTimeoutMillis: 30000,
@@ -65,6 +64,16 @@ class PostgresQueryBuilder {
 
   neq(field: string, value: any) {
     this.whereConditions.push({ field, operator: '!=', value });
+    return this;
+  }
+
+  gte(field: string, value: any) {
+    this.whereConditions.push({ field, operator: '>=', value });
+    return this;
+  }
+
+  lte(field: string, value: any) {
+    this.whereConditions.push({ field, operator: '<=', value });
     return this;
   }
 
@@ -189,8 +198,12 @@ class PostgresTable {
     return new PostgresDeleteBuilder(this.table);
   }
 
-  upsert(data: any) {
-    return new PostgresUpsertBuilder(this.table, data);
+  upsert(data: any, options?: { onConflict?: string }) {
+    const builder = new PostgresUpsertBuilder(this.table, data);
+    if (options?.onConflict) {
+      builder.onConflict(options.onConflict);
+    }
+    return builder;
   }
 }
 
@@ -430,6 +443,11 @@ class PostgresUpsertBuilder {
     return this;
   }
 
+  onConflict(field: string) {
+    this.conflictTarget = field;
+    return this;
+  }
+
   select(fields: string) {
     this.selectFields = fields;
     return this;
@@ -507,6 +525,28 @@ class PostgresClient {
 
   rpc(functionName: string, params?: any) {
     return new PostgresRpcBuilder(functionName, params);
+  }
+
+  get storage() {
+    return {
+      from: (bucket: string) => ({
+        upload: async (path: string, file: Buffer, options?: any) => {
+          return {
+            error: {
+              code: 'NOT_IMPLEMENTED',
+              message: 'Storage is not supported with direct PostgreSQL connection. Use Supabase client for storage operations.'
+            }
+          };
+        },
+        getPublicUrl: (path: string) => {
+          return {
+            data: {
+              publicUrl: `https://storage.example.com/${bucket}/${path}`
+            }
+          };
+        }
+      })
+    };
   }
 }
 
