@@ -124,7 +124,7 @@ DROP TABLE IF EXISTS "${tableName}" CASCADE;
             
             sqlContent += `INSERT INTO "${tableName}" (${columnNames.join(', ')}) VALUES\n`;
             
-            const values = batch.map(row => {
+            const values = batch.map((row: any) => {
               const rowValues = columnNames.map(colName => {
                 const value = row[colName.replace(/"/g, '')];
                 if (value === null) return 'NULL';
