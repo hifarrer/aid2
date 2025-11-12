@@ -87,7 +87,7 @@ async function saveImageAnalysis(
         image_mime_type: imageMimeType,
         analysis_type: 'image'
       })
-      .select()
+      .select('*')
       .single();
 
     if (error) {
