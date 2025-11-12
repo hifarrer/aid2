@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
         const response = await supabase
           .from('health_reports')
           .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id) as { count: number | null; error: any };
+          .eq('user_id', user.id) as unknown as { count: number | null; error: any };
 
         if (response.error) {
           console.error('Error counting health reports:', response.error);
